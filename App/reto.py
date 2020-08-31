@@ -32,7 +32,6 @@ import csv
 
 from ADT import list as lt
 from DataStructures import listiterator as it
-from DataStructures import liststructure as lt
 
 from time import process_time 
 
@@ -78,11 +77,29 @@ def loadCSVFile (file, cmpfunction):
 
 
 def loadMovies ():
-    lst = loadCSVFile("theMoviesdb/movies-small.csv",compareRecordIds) 
+    lst = loadCSVFile("theMoviesdb/SmallMoviesDetailsCleaned.csv",compareRecordIds)
+    print("Datos cargados, " + str(lt.size(lst)) + " elementos cargados")
+    return lst
+def loadMovies2 ():
+    lst = loadCSVFile("theMoviesdb/MoviesCastingRaw-small.csv",compareRecordIds)
     print("Datos cargados, " + str(lt.size(lst)) + " elementos cargados")
     return lst
 
-
+def conocerdirector(lst, lst2, director):
+    l_peliculas = lt.newList("ARRAY_LIST", compareRecordIds)
+    contador = 0
+    valoracion = 0
+    tupla = () 
+    for n in range(1,lt.size(lst)+1):
+        pelicula = lt.getElement(lst, n)
+        n_director = lt.getElement(lst2, n)
+        if director.lower()==n_director["director_name"].lower():
+            lt.addLast(l_peliculas, pelicula["title"])
+            contador += 1
+            valoracion += float(pelicula["vote_average"])
+    promedio = valoracion/contador
+    tupla = (l_peliculas,contador, promedio)
+    return tupla
 def main():
     """
     Método principal del programa, se encarga de manejar todos los metodos adicionales creados
@@ -95,17 +112,22 @@ def main():
 
     while True:
         printMenu() #imprimir el menu de opciones en consola
+        lstmovies = []
+        lstmovies2 = []
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
 
             if int(inputs[0])==1: #opcion 1
                 lstmovies = loadMovies()
+                lstmovies2 = loadMovies2()
 
             elif int(inputs[0])==2: #opcion 2
                 pass
 
             elif int(inputs[0])==3: #opcion 3
-                pass
+                director = input("Ingrese el nombre del director: ")
+                datos = conocerdirector(lstmovies, lstmovies2, director)
+                print(datos)
 
             elif int(inputs[0])==4: #opcion 4
                 pass
