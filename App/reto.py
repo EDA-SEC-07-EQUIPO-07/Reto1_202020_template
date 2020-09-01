@@ -100,6 +100,21 @@ def conocerdirector(lst, lst2, director):
     promedio = valoracion/contador
     tupla = (l_peliculas,contador, promedio)
     return tupla
+
+def genero_pelicula(lst, genero):
+    l_peliculas = lt.newList("ARRAY_LIST", compareRecordIds)
+    contador = 0
+    valoracion = 0
+    tupla = ()
+    for n in range(1,lt.size(lst)+1):
+        pelicula = lt.getElement(lst, n)
+        if genero.lower()==pelicula["genres"].lower() or genero.lower() in pelicula["genres"].lower():
+            lt.addLast(l_peliculas, pelicula["title"])
+            contador += 1
+            valoracion += float(pelicula["vote_average"])
+    promedio = valoracion/contador
+    tupla = (l_peliculas,contador, promedio)
+    return tupla
 def main():
     """
     Método principal del programa, se encarga de manejar todos los metodos adicionales creados
@@ -112,8 +127,6 @@ def main():
 
     while True:
         printMenu() #imprimir el menu de opciones en consola
-        lstmovies = []
-        lstmovies2 = []
         inputs =input('Seleccione una opción para continuar\n') #leer opción ingresada
         if len(inputs)>0:
 
@@ -132,10 +145,12 @@ def main():
             elif int(inputs[0])==4: #opcion 4
                 pass
 
-            elif int(inputs[0])==3: #opcion 5
-                pass
+            elif int(inputs[0])==5: #opcion 5
+                genero = input("Ingrese el género de las películas: ")
+                datos = genero_pelicula(lstmovies, genero)
+                print(datos)
 
-            elif int(inputs[0])==4: #opcion 6
+            elif int(inputs[0])==6: #opcion 6
                 pass
 
 
