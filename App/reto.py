@@ -115,6 +115,24 @@ def genero_pelicula(lst, genero):
     promedio = valoracion/contador
     tupla = (l_peliculas,contador, promedio)
     return tupla
+def rankingGenero(lst, cantidad, genero, parametro, orden):
+    tupla = ()
+    contador = 0
+    l_peliculas = lt.newList("ARRAY_LIST", compareRecordIds)
+    lt.insertionSort(lst, orden, parametro)  
+    for n in range(1,lt.size(lst)+1):
+        if l_peliculas['size'] < cantidad:
+            pelicula = lt.getElement(lst, n)
+            if genero.lower()==pelicula["genres"].lower() or genero.lower() in pelicula["genres"].lower():
+                lt.addLast(l_peliculas, pelicula) 
+                if parametro == "vote_average":
+                    contador += float(pelicula["vote_average"])
+                elif parametro == "vote_count":
+                    contador += int(pelicula["vote_count"])      
+    promedio = contador/lt.size(l_peliculas)
+    tupla = (l_peliculas['elements'], promedio)                
+    return tupla
+    
 def main():
     """
     Método principal del programa, se encarga de manejar todos los metodos adicionales creados
@@ -151,7 +169,21 @@ def main():
                 print(datos)
 
             elif int(inputs[0])==6: #opcion 6
-                pass
+                cantidad = 0
+                while cantidad < 10:
+                    cantidad = int(input("Ingrese la cantidad (mayor a 10) de las películas que desea buscar: "))
+                genero = input("Ingrese el género de las películas: ")
+                parametro = input("Ingrese el digito 0 si quiere buscar por voto promedio o 1 si quiere por cantidad de votos: ")
+                orden = input("Ingrese 1 si quiere que sea en orden descendente o 0 si desea que sea en orden ascendente: ")
+                if int(parametro) == 0:
+                    parametro = "vote_average"
+                elif int(parametro) == 1:
+                    parametro = "vote_count"
+                if int(orden) == 0:
+                    orden = "less"
+                elif int(orden) == 1:
+                    orden = "greater"
+                print(rankingGenero(lstmovies, cantidad, genero, parametro, orden))
 
 
             elif int(inputs[0])==0: #opcion 0, salir
