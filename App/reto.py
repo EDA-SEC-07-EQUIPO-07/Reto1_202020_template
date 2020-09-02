@@ -85,6 +85,16 @@ def loadMovies2 ():
     print("Datos cargados, " + str(lt.size(lst)) + " elementos cargados")
     return lst
 
+def ranking_usuario(lst, cantidad, parametro, orden):
+    ranking=lt.newList("ARRAY_LIST",compareRecordIds)
+    lt.insertionSort(lst, orden, parametro)
+    for i in range(1,lt.size(lst)+1):
+        if ranking['size'] < cantidad:
+            pelicula = lt.getElement(lst, i)
+            lt.addLast(ranking, pelicula) 
+             
+    return ranking
+
 def conocerdirector(lst, lst2, director):
     l_peliculas = lt.newList("ARRAY_LIST", compareRecordIds)
     contador = 0
@@ -183,7 +193,21 @@ def main():
                 lstmovies2 = loadMovies2()
 
             elif int(inputs[0])==2: #opcion 2
-                pass
+                cantidad = 0
+                while cantidad < 10:
+                    cantidad = int(input("Ingrese la cantidad (mayor a 10) de las películas que desea buscar: "))
+                parametro = input("Ingrese el digito 0 si quiere buscar por voto promedio o 1 si quiere por cantidad de votos: ")
+                orden = input("Ingrese 1 si quiere que sea en orden descendente o 0 si desea que sea en orden ascendente: ")
+                if int(parametro) == 0:
+                    parametro = "vote_average"
+                elif int(parametro) == 1:
+                    parametro = "vote_count"
+                if int(orden) == 0:
+                    orden = "less"
+                elif int(orden) == 1:
+                    orden = "greater"
+                datos = ranking_usuario(lstmovies, cantidad, parametro, orden)
+                print(datos)
 
             elif int(inputs[0])==3: #opcion 3
                 director = input("Ingrese el nombre del director: ")
@@ -215,7 +239,8 @@ def main():
                     orden = "less"
                 elif int(orden) == 1:
                     orden = "greater"
-                print(rankingGenero(lstmovies, cantidad, genero, parametro, orden))
+                datos = rankingGenero(lstmovies, cantidad, genero, parametro, orden)
+                print(datos)
 
 
             elif int(inputs[0])==0: #opcion 0, salir
