@@ -342,4 +342,30 @@ def subList (lst, pos, numelem):
     except Exception as exp:
         error.reraise (exp, 'List->subList: ')
 
+def insertionSort (lst, lessfunction, parametro): 
+    size1 = size(lst) 
+    pos1 = 1
+    while pos1 <= size1:
+        pos2 = pos1
+        if lessfunction == "less":
+            while (pos2 >1) and (less (getElement(lst, pos2),getElement(lst, pos2-1), parametro)):
+                exchange (lst, pos2, pos2-1)
+                pos2 -= 1
+        elif lessfunction == "greater":
+            while (pos2 >1) and (greater (getElement(lst, pos2),getElement(lst, pos2-1), parametro)):
+                exchange (lst, pos2, pos2-1)
+                pos2 -= 1
+        pos1 += 1
+    return lst
+
+def less(element1, element2, parametro):
+    if float(element1[str(parametro)]) < float(element2[str(parametro)]):
+        return True
+    return False
+
+def greater(element1, element2, parametro):
+    if float(element1[str(parametro)]) > float(element2[str(parametro)]):
+        return True
+    return False
+
 
