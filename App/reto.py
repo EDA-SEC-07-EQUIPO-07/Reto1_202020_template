@@ -101,6 +101,36 @@ def conocerdirector(lst, lst2, director):
     tupla = (l_peliculas,contador, promedio)
     return tupla
 
+def actor_info (nombre_actor,lstmovies,lstmovies2):
+    l_peliculas=lt.newList("ARRAY_LIST", compareRecordIds)
+    contador_peliculas=0
+    valoracion=0
+    directores={}
+    tupla=()
+    lista_directores=[]
+    for i in range (1,(lstmovies['size']+1)):
+        nombre=lt.getElement(lstmovies2,i)
+        pelicula=lt.getElement(lstmovies,i)
+        if nombre_actor.lower()==nombre["actor1_name"].lower() or nombre_actor.lower()==nombre["actor2_name"].lower() or nombre_actor.lower()==nombre["actor3_name"].lower() or nombre_actor.lower()==nombre["actor4_name"].lower() or nombre_actor.lower()==nombre["actor5_name"].lower():
+            lt.addLast(l_peliculas,pelicula["title"])
+            contador_peliculas=contador_peliculas+1
+            valoracion=valoracion+float(pelicula["vote_average"])
+            if not((nombre["director_name"]) in directores):
+                directores[nombre["director_name"]]=1
+            elif nombre["director_name"] in directores:
+                directores[nombre["director_name"]]+=1
+    nom_dic=list(directores.keys())
+    num_dic=list(directores.values())
+    max_dic=max(num_dic)
+    i=0
+    while i<len(nom_dic):
+        if max_dic==directores[nom_dic[i]]:
+            lista_directores.append(nom_dic[i])
+        i=i+1
+    promedio=valoracion/contador_peliculas
+    tupla=(l_peliculas['elements'],promedio,lista_directores,contador_peliculas)
+    return tupla
+
 def genero_pelicula(lst, genero):
     l_peliculas = lt.newList("ARRAY_LIST", compareRecordIds)
     contador = 0
@@ -161,7 +191,9 @@ def main():
                 print(datos)
 
             elif int(inputs[0])==4: #opcion 4
-                pass
+                nombre_actor=input("Inserte el nombre del actor a buscar: ")
+                datos = actor_info(nombre_actor,lstmovies,lstmovies2)
+                print(datos)
 
             elif int(inputs[0])==5: #opcion 5
                 genero = input("Ingrese el género de las películas: ")
