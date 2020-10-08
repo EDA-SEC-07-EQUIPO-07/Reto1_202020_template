@@ -100,7 +100,20 @@ def ranking_usuario(lst, cantidad, parametro, orden):
             lt.addLast(ranking, pelicula)             
     return ranking
 
+def compañias(lst):
+    l_peliculas = lt.newList("ARRAY_LIST", compareRecordIds)
+    for n in range(1,lt.size(lst)+1):
+        f = lt.getElement(lst, n)
+        lt.addLast(l_peliculas, f["production_companies"])
+    return l_peliculas["elements"]
 
+def idioma (lst, idioma):
+	peliculas = lt.newList("ARRAY_LIST", compareRecordIds)
+	for i in range(1,lt.size(lst)+1):
+		f = lt.getElement(lst, i)
+		if idioma.lower() == f["original_language"].lower():
+			lt.addLast(peliculas, f["title"])
+	return peliculas
 
 def conocerdirector(lst, lst2, director):
     l_peliculas = lt.newList("ARRAY_LIST", compareRecordIds)
@@ -192,6 +205,7 @@ def rankingGenero(lst, cantidad, genero, parametro, orden):
 def main():
     """
     Método principal del programa, se encarga de manejar todos los metodos adicionales creados
+
     Instancia una lista vacia en la cual se guardarán los datos cargados desde el archivo
     Args: None
     Return: None 
@@ -252,7 +266,15 @@ def main():
                 elif int(orden) == 1:
                     orden = "greater"
                 print(rankingGenero(lstmovies, cantidad, genero, parametro, orden))
-
+                
+            elif int(inputs[0])==7: #opcion 7
+                datos = compañias(lstmovies)
+                print(datos)
+                
+            elif int(inputs[0])==8: #opcion 8
+                ida = input("Ingrese el idioma de las películas: ")
+                datos = idioma(lstmovies, ida)
+                print(datos)
 
             elif int(inputs[0])==0: #opcion 0, salir
                 sys.exit(0)
